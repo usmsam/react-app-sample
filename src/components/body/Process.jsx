@@ -7,7 +7,7 @@ import { Context } from '../context/contect';
 
 
 function Process() {
-  const { data, update,removeToProcess, removeTodo } = useContext(Context)
+  const { data,removeToProcess, removeTodo } = useContext(Context)
   let filtered = data.filter((item) => {
     return item.process
   })
