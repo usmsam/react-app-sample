@@ -24,7 +24,7 @@ function App() {
 
   function update(id) {
     let datafiltered = data.map((item) => {
-      if (item.id == id) {
+      if (item.id === id) {
         item.checked = !item.checked
         item.process = false;
       }
@@ -34,7 +34,7 @@ function App() {
   }
   function saveToProcess(id) {
     let dataa = data.map((item) => {
-      if (item.id == id) {
+      if (item.id === id) {
         item.process = !item.process;
         item.checked = false;
         item.finished = false
@@ -45,7 +45,7 @@ function App() {
   }
   function removeToProcess(id) {
     let dataa = data.map((item) => {
-      if (item.id == id) {
+      if (item.id === id) {
         item.process = false;
       
       }
@@ -55,7 +55,7 @@ function App() {
   }
   function removeTodo(id) {
     let dataUpdated = data.filter((item) => {
-      return item.id != id;
+      return item.id !== id;
     })
     setData(dataUpdated)
   }
