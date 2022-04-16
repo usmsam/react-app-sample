@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useRef } from 'react'
 import './Body.css'
 import { AiOutlineDelete } from 'react-icons/ai'
 import { FcProcess } from 'react-icons/fc';
@@ -8,8 +8,8 @@ import { Context } from '../context/contect';
 
 function Body() {
 
-  const { data, update, saveToProcess, removeTodo } = useContext(Context)
-
+  const { data, update, setData, saveToProcess, removeTodo, commitToState } = useContext(Context)
+  const ref = useRef()
 
   return (
 
@@ -23,6 +23,7 @@ function Body() {
                 className='inp' type="checkbox"
                 checked={item.checked ? 'checked' : ''}
                 onClick={() => update(item.id)}
+
               />
               <p style={{ textDecoration: item.checked ? 'line-through' : '' }}>
                 {item.id}.{item.title}
@@ -42,6 +43,17 @@ function Body() {
 
         <p className='perror'>Нет заданий</p>
       }
+
+
+      <div className='addTask'>
+        <div className="taska">
+          <input ref={ref} type="text" onChange={(e) => e.target.value} />
+          <button onClick={() => {
+            commitToState(ref.current)
+          }}>Commit</button>
+        </div>
+
+      </div>
     </div>
 
   )

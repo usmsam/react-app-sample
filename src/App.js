@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Navbar from './components/navbar/Navbar'
 import RoutesComp from './components/navbar/Routes'
 import Body from './components/body/Body'
@@ -10,18 +10,30 @@ import { Context } from './components/context/contect'
 
 
 function App() {
-  const [data, setData] = useState([
-    { id: 1, title: 'Погулять с собакой', checked: false, process: false, finished: false },
-    { id: 2, title: 'Покормить собаку', checked: false, process: false, finished: false },
-    { id: 3, title: 'Купить хлеб', checked: false, process: false, finished: false },
-    { id: 4, title: 'Поспать :)', checked: false, process: false, finished: false },
-    { id: 5, title: 'Поесть', checked: false, process: false, finished: false },
-    { id: 6, title: 'Тренровка', checked: false, process: false, finished: false },
-    { id: 7, title: 'Кодинг', checked: false, process: false, finished: false },
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    if (!localStorage.getItem('data')) {
+      localStorage.setItem('data', JSON.stringify([{
+        id: 1, title: 'first task', process: false, checked: false, finished: false
+      }]))
+    }
 
-  ])
+    if (localStorage.getItem('data')) {
+      setData(
+        JSON.parse(localStorage.getItem('data'))
+      )
+    }
+
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('data', JSON.stringify(data))
+  }, [data])
 
 
+  function toStorage(array) {
+    localStorage.setItem('data', JSON.stringify(array))
+  }
   function update(id) {
     let datafiltered = data.map((item) => {
       if (item.id === id) {
@@ -31,6 +43,7 @@ function App() {
       return item
     })
     setData(datafiltered)
+    toStorage(datafiltered)
   }
   function saveToProcess(id) {
     let dataa = data.map((item) => {
@@ -42,29 +55,49 @@ function App() {
       return item
     })
     setData(dataa)
+    toStorage(dataa)
+
   }
   function removeToProcess(id) {
     let dataa = data.map((item) => {
       if (item.id === id) {
         item.process = false;
-      
+
       }
       return item
     })
     setData(dataa)
+    toStorage(dataa)
+
   }
   function removeTodo(id) {
     let dataUpdated = data.filter((item) => {
       return item.id !== id;
     })
     setData(dataUpdated)
+    toStorage(dataUpdated)
+
   }
 
 
+  /*====================================== */
+  function commitToState(current) {
+    if (current.value.trim() != '') {
+      setData([...data, {
+        id: data.length + 1, title: current.value, process: false, checked: false, finished: false
+      }])
+      console.log(data);
+      current.value = null;
+    }
+
+  }
+
+  /*====================================== */
+
   return (
     <Context.Provider value={{
-      data,
-      update, saveToProcess, removeTodo ,removeToProcess
+      data, commitToState, setData,
+      update, saveToProcess, removeTodo, removeToProcess
     }}>
       <BrowserRouter>
         <Navbar>
@@ -76,7 +109,7 @@ function App() {
           <Routes>
             <Route path='/' element={<Body />} />
             <Route path='/finished' element={<Finished />} />
-            <Route path='/processing' element={<Process/>} />
+            <Route path='/processing' element={<Process />} />
             <Route path='*' element={<Body />} />
           </Routes>
         </div >
