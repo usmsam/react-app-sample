@@ -8,7 +8,7 @@ import { Context } from '../context/contect';
 
 function Body() {
 
-  const { data, update, setData, saveToProcess, removeTodo, commitToState } = useContext(Context)
+  const { data, update, saveToProcess, removeTodo, commitToState } = useContext(Context)
   const ref = useRef()
 
   return (
