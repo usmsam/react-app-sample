@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect,  useState } from 'react'
 import Navbar from './components/navbar/Navbar'
 import RoutesComp from './components/navbar/Routes'
 import Body from './components/body/Body'
@@ -82,7 +82,7 @@ function App() {
 
   /*====================================== */
   function commitToState(current) {
-    if (current.value.trim() != '') {
+    if (current.value.trim() !== '') {
       setData([...data, {
         id: data.length + 1, title: current.value, process: false, checked: false, finished: false
       }])
